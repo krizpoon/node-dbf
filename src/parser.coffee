@@ -1,6 +1,7 @@
 {EventEmitter} = require 'events'
 Header = require './header'
 fs = require 'fs'
+iconv = require 'iconv-lite'
 
 class Parser extends EventEmitter
 
@@ -70,7 +71,7 @@ class Parser extends EventEmitter
         return record
 
     parseField: (field, buffer) =>
-        value = (buffer.toString @encoding).trim()
+        value = iconv.decode(buffer, @encoding).trim()
 
         if field.type is 'N'
             value = parseInt value, 10
