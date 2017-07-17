@@ -32,7 +32,7 @@ class Parser extends EventEmitter
                 
                 while buffer = stream.read()
                     if bufLoc isnt @header.start then bufLoc = 0
-                    if overflow isnt null then buffer = overflow + buffer
+                    if overflow isnt null then buffer = Buffer.concat([overflow, buffer], overflow.length + buffer.length)
 
                     while loc < (@header.start + @header.numberOfRecords * @header.recordLength) && (bufLoc + @header.recordLength) <= buffer.length
                         @emit 'record', @parseRecord ++sequenceNumber, buffer.slice bufLoc, bufLoc += @header.recordLength
